@@ -23,6 +23,7 @@ export async function onRequest(context) {
       country: a.country,
       slug: a.slug,
       iata_city_code: a.iata_city_code,
+      number_of_nights: a.number_of_nights,
       cheapest: p ? {
         price: p.price,
         currency: p.currency || "EUR",

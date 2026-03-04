@@ -77,11 +77,7 @@
 
           <div class="price">${money(price, cur)}</div>
           <div class="muted">${updated ? ("Updated: " + escapeHtml(updated)) : "Not updated yet"}</div>
-
-          <div class="row" style="margin-top:10px;">
-            <label><input type="radio" name="n_${a.iata_city_code}" value="3" checked> 3 night</label>
-            <label><input type="radio" name="n_${a.iata_city_code}" value="5-7"> 5-7 night</label>
-          </div>
+          <div class="muted">Nights: ${escapeHtml(a.number_of_nights || "-")}</div>
 
           <div class="row">
             <button class="btn" data-to="${escapeAttr(a.iata_city_code)}">Send Request</button>
@@ -92,23 +88,23 @@
         const btn = card.querySelector("button.btn");
         btn.addEventListener("click", async () => {
           const to = btn.getAttribute("data-to");
-          const nights = (card.querySelector(`input[name="n_${to}"]:checked`) || {}).value || "3";
-          await sendRequest(to, nights);
+          await sendRequest(to);
         });
 
         grid.appendChild(card);
       }
     }
 
-    async function sendRequest(to_code, nights_pref) {
+    async function sendRequest(to_code) {
       const msg = document.getElementById("msg_" + to_code);
       msg.textContent = "Sending...";
       msg.className = "muted";
+      const file_ref = `${to_code}.json`;
 
       const res = await fetch("/api/request", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ to_code, nights_pref })
+        body: JSON.stringify({ file_ref })
       });
 
       if (!res.ok) {
@@ -124,7 +120,7 @@
         return;
       }
 
-      msg.textContent = "Queued: " + data.id;
+      msg.textContent = "Queued: " + (data.file_ref || file_ref);
       msg.className = "muted ok";
     }
 
