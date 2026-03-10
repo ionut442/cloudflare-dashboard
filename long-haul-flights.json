@@ -1,0 +1,93 @@
+[
+  {
+    "momondo_url": "https://www.momondo.ro/flight-search/OTP-DPS/2026-09-22/2026-10-04&sort=bestflight_a",
+    "origin": "OTP",
+    "destination": "DPS",
+    "outbound_date": "2026-09-22",
+    "inbound_date": "2026-10-04",
+    "cards": [],
+    "error": "Filtered out: momondo 669.00€ > Skyscanner 581.00€ + 50€",
+    "route": "OTP -> DPS",
+    "date": "2026-09-22 -> 2026-10-04",
+    "skyscanner_price_eur": 581,
+    "skyscanner_link": "https://skyscanner.net/g/referrals/v1/flights/day-view?mediaPartnerId=1248951&market=RO&locale=ro-RO&currency=EUR&utm_term=watcher&origin=OTP&destination=DPS&outboundDate=2026-09-22&inboundDate=2026-10-04"
+  },
+  {
+    "momondo_url": "https://www.momondo.ro/flight-search/OTP-SGN/2026-11-22/2026-12-06&sort=bestflight_a",
+    "origin": "OTP",
+    "destination": "SGN",
+    "outbound_date": "2026-11-22",
+    "inbound_date": "2026-12-06",
+    "cards": [
+      {
+        "airlines": [
+          "Aegean Airlines",
+          "Scoot",
+          "TAROM"
+        ],
+        "price_eur": 562,
+        "screenshot_path": "screenshots/OTP-SGN-2026-11-22-2026-12-06.png"
+      }
+    ],
+    "error": null,
+    "route": "OTP -> SGN",
+    "date": "2026-11-22 -> 2026-12-06",
+    "skyscanner_price_eur": 597,
+    "skyscanner_link": "https://skyscanner.net/g/referrals/v1/flights/day-view?mediaPartnerId=1248951&market=RO&locale=ro-RO&currency=EUR&utm_term=watcher&origin=OTP&destination=SGN&outboundDate=2026-11-22&inboundDate=2026-12-06"
+  },
+  {
+    "momondo_url": "https://www.momondo.ro/flight-search/OTP-MIA/2026-04-07/2026-04-16&sort=bestflight_a",
+    "origin": "OTP",
+    "destination": "MIA",
+    "outbound_date": "2026-04-07",
+    "inbound_date": "2026-04-16",
+    "cards": [
+      {
+        "airlines": [
+          "LOT"
+        ],
+        "price_eur": 570,
+        "screenshot_path": "screenshots/OTP-MIA-2026-04-07-2026-04-16.png"
+      }
+    ],
+    "error": null,
+    "route": "OTP -> MIA",
+    "date": "2026-04-07 -> 2026-04-16",
+    "skyscanner_price_eur": 549,
+    "skyscanner_link": "https://skyscanner.net/g/referrals/v1/flights/day-view?mediaPartnerId=1248951&market=RO&locale=ro-RO&currency=EUR&utm_term=watcher&origin=OTP&destination=MIA&outboundDate=2026-04-07&inboundDate=2026-04-16"
+  },
+  {
+    "momondo_url": "https://www.momondo.ro/flight-search/OTP-MIA/2026-03-22/2026-04-04&sort=bestflight_a",
+    "origin": "OTP",
+    "destination": "MIA",
+    "outbound_date": "2026-03-22",
+    "inbound_date": "2026-04-04",
+    "cards": [],
+    "error": "Filtered out: momondo 718.00€ > Skyscanner 549.00€ + 50€",
+    "route": "OTP -> MIA",
+    "date": "2026-03-22 -> 2026-04-04",
+    "skyscanner_price_eur": 549,
+    "skyscanner_link": "https://skyscanner.net/g/referrals/v1/flights/day-view?mediaPartnerId=1248951&market=RO&locale=ro-RO&currency=EUR&utm_term=watcher&origin=OTP&destination=MIA&outboundDate=2026-03-22&inboundDate=2026-04-04"
+  },
+  {
+    "momondo_url": "https://www.momondo.ro/flight-search/OTP-MIA/2026-10-08/2026-10-16&sort=bestflight_a",
+    "origin": "OTP",
+    "destination": "MIA",
+    "outbound_date": "2026-10-08",
+    "inbound_date": "2026-10-16",
+    "cards": [
+      {
+        "airlines": [
+          "LOT"
+        ],
+        "price_eur": 577,
+        "screenshot_path": "screenshots/OTP-MIA-2026-10-08-2026-10-16.png"
+      }
+    ],
+    "error": null,
+    "route": "OTP -> MIA",
+    "date": "2026-10-08 -> 2026-10-16",
+    "skyscanner_price_eur": 549,
+    "skyscanner_link": "https://skyscanner.net/g/referrals/v1/flights/day-view?mediaPartnerId=1248951&market=RO&locale=ro-RO&currency=EUR&utm_term=watcher&origin=OTP&destination=MIA&outboundDate=2026-10-08&inboundDate=2026-10-16"
+  }
+]

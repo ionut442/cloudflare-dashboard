@@ -417,6 +417,10 @@
       line-height: 1.5;
     }
 
+    .link-btn {
+      text-decoration: none;
+    }
+
     @media (max-width: 640px) {
       .header { padding: 0 16px; }
       .main { padding: 20px 16px; }
@@ -533,18 +537,56 @@
     </section>
 
     <section class="tab-panel" id="panelLongHaul" role="tabpanel" aria-labelledby="tabLongHaul" hidden>
-      <h1 class="page-title">Long Haul Flights</h1>
-      <p class="page-subtitle">This tab is ready for the long-haul inventory when you want to wire it in.</p>
-      <div class="empty-state">
-        <h2>No long-haul flights yet</h2>
-        <p>This page is intentionally empty for now. The tab is live and ready for data, filters, and actions once you decide what should go here.</p>
+      <div class="section-header">
+        <div class="section-heading">
+          <h1 class="page-title">Long Haul Flights</h1>
+          <p class="page-subtitle">Browse the latest long-haul deals pushed from your server feed.</p>
+        </div>
+        <div class="page-actions">
+          <span class="status-text" id="longHaulStatusText"></span>
+        </div>
       </div>
+
+      <div class="grid" id="longHaulSkeletons">
+        <div class="skeleton">
+          <div class="skel-line" style="width:60%;height:18px;"></div>
+          <div class="skel-line" style="width:30%;height:13px;margin-bottom:18px;"></div>
+          <div class="skel-line" style="width:40%;height:30px;margin-bottom:8px;"></div>
+          <div class="skel-line" style="width:75%;height:13px;margin-bottom:20px;"></div>
+          <div class="skel-line" style="width:100%;height:36px;border-radius:8px;margin-bottom:0;"></div>
+        </div>
+        <div class="skeleton">
+          <div class="skel-line" style="width:60%;height:18px;"></div>
+          <div class="skel-line" style="width:30%;height:13px;margin-bottom:18px;"></div>
+          <div class="skel-line" style="width:40%;height:30px;margin-bottom:8px;"></div>
+          <div class="skel-line" style="width:75%;height:13px;margin-bottom:20px;"></div>
+          <div class="skel-line" style="width:100%;height:36px;border-radius:8px;margin-bottom:0;"></div>
+        </div>
+        <div class="skeleton">
+          <div class="skel-line" style="width:60%;height:18px;"></div>
+          <div class="skel-line" style="width:30%;height:13px;margin-bottom:18px;"></div>
+          <div class="skel-line" style="width:40%;height:30px;margin-bottom:8px;"></div>
+          <div class="skel-line" style="width:75%;height:13px;margin-bottom:20px;"></div>
+          <div class="skel-line" style="width:100%;height:36px;border-radius:8px;margin-bottom:0;"></div>
+        </div>
+      </div>
+
+      <div class="empty-state" id="longHaulEmpty" hidden>
+        <h2>No long-haul flights yet</h2>
+        <p>The feed is connected, but there are no usable long-haul deals to show right now.</p>
+      </div>
+
+      <div class="grid" id="longHaulGrid" style="display:none;"></div>
     </section>
   </main>
 
   <script>
     const grid = document.getElementById("grid");
     const skeletons = document.getElementById("skeletons");
+    const longHaulGrid = document.getElementById("longHaulGrid");
+    const longHaulSkeletons = document.getElementById("longHaulSkeletons");
+    const longHaulEmpty = document.getElementById("longHaulEmpty");
+    const longHaulStatusText = document.getElementById("longHaulStatusText");
     const refreshBtn = document.getElementById("refreshBtn");
     const statusText = document.getElementById("statusText");
     const sortSelect = document.getElementById("sortSelect");
@@ -554,6 +596,7 @@
       "long-haul": document.getElementById("panelLongHaul")
     };
     let airportsData = [];
+    let longHaulDeals = [];
 
     refreshBtn.addEventListener("click", load);
     sortSelect.addEventListener("change", renderSorted);
@@ -562,6 +605,10 @@
     });
 
     async function load() {
+      await Promise.all([loadLowCostFlights(), loadLongHaulFlights()]);
+    }
+
+    async function loadLowCostFlights() {
       refreshBtn.disabled = true;
       statusText.textContent = "Refreshing…";
       skeletons.style.display = "grid";
@@ -583,6 +630,47 @@
         skeletons.style.display = "none";
       } finally {
         refreshBtn.disabled = false;
+      }
+    }
+
+    async function loadLongHaulFlights() {
+      longHaulStatusText.textContent = "Refreshing…";
+      longHaulSkeletons.style.display = "grid";
+      longHaulGrid.style.display = "none";
+      longHaulEmpty.hidden = true;
+
+      try {
+        const res = await fetch("/api/long-haul", { cache: "no-store" });
+        if (!res.ok) {
+          longHaulStatusText.textContent = "API not set up yet.";
+          longHaulSkeletons.style.display = "none";
+          longHaulEmpty.hidden = false;
+          return;
+        }
+
+        const data = await res.json();
+        if (!data.ok) {
+          longHaulStatusText.textContent = "Failed to load.";
+          longHaulSkeletons.style.display = "none";
+          longHaulEmpty.hidden = false;
+          return;
+        }
+
+        longHaulDeals = Array.isArray(data.deals) ? data.deals : [];
+        longHaulStatusText.textContent = `${data.total} deals`;
+        longHaulSkeletons.style.display = "none";
+
+        if (!longHaulDeals.length) {
+          longHaulEmpty.hidden = false;
+          return;
+        }
+
+        longHaulGrid.style.display = "grid";
+        renderLongHaul(longHaulDeals);
+      } catch {
+        longHaulStatusText.textContent = "Connection error.";
+        longHaulSkeletons.style.display = "none";
+        longHaulEmpty.hidden = false;
       }
     }
 
@@ -660,6 +748,48 @@
       });
     }
 
+    function renderLongHaul(deals) {
+      longHaulGrid.innerHTML = "";
+      deals.forEach((deal, i) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.style.animationDelay = `${i * 40}ms`;
+
+        card.innerHTML = `
+          <div class="card-top">
+            <div>
+              <div class="city-name">${esc(formatRoute(deal.origin, deal.destination))}</div>
+              <div class="country">${esc(formatTripDates(deal.outbound_date, deal.inbound_date))}</div>
+            </div>
+            <span class="iata">${esc(deal.destination)}</span>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="price-row">
+            <span class="price">${esc(formatPrice(deal.price_eur))}</span>
+            <span class="currency">EUR</span>
+          </div>
+
+          <div class="meta">
+            ${deal.airlines?.length ? `<span class="meta-item">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92V19a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.08 3.18 2 2 0 0 1 4.06 1h2.09a2 2 0 0 1 2 1.72c.12.9.32 1.78.59 2.63a2 2 0 0 1-.45 2.11L7.4 8.6a16 16 0 0 0 8 8l1.14-1.14a2 2 0 0 1 2.11-.45c.85.27 1.73.47 2.63.59A2 2 0 0 1 22 16.92z"/></svg>
+              ${esc(deal.airlines.join(", "))}
+            </span>` : ""}
+          </div>
+
+          <div class="card-footer">
+            <a class="btn-send link-btn" href="${esc(deal.momondo_url)}" target="_blank" rel="noreferrer">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+              Check flight
+            </a>
+          </div>
+        `;
+
+        longHaulGrid.appendChild(card);
+      });
+    }
+
     async function sendRequest(code, btn) {
       const fb = document.getElementById("fb_" + code);
       btn.disabled = true;
@@ -708,6 +838,23 @@
       const d = new Date(value);
       return Number.isNaN(d.getTime())
         ? value
+        : d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+    }
+
+    function formatRoute(origin, destination) {
+      return `${String(origin || "").toUpperCase()} - ${String(destination || "").toUpperCase()}`;
+    }
+
+    function formatTripDates(outbound, inbound) {
+      const out = formatDate(outbound);
+      const back = formatDate(inbound);
+      return out && back ? `${out} - ${back}` : "Dates not available";
+    }
+
+    function formatDate(value) {
+      const d = new Date(value);
+      return Number.isNaN(d.getTime())
+        ? ""
         : d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
     }
 
