@@ -114,7 +114,7 @@
 
     /* Main */
     .main {
-      max-width: 1200px;
+      max-width: 1380px;
       margin: 0 auto;
       padding: 32px;
     }
@@ -135,8 +135,8 @@
     /* Grid */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 12px;
     }
 
     /* Card */
@@ -144,7 +144,7 @@
       background: var(--white);
       border: 1.5px solid var(--border);
       border-radius: var(--radius);
-      padding: 20px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
       transition: box-shadow 0.2s, border-color 0.2s;
@@ -165,18 +165,18 @@
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
     }
 
     .city-name {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       letter-spacing: -0.2px;
-      margin-bottom: 3px;
+      margin-bottom: 2px;
     }
 
     .country {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-secondary);
     }
 
@@ -193,7 +193,7 @@
     .divider {
       height: 1px;
       background: var(--border);
-      margin-bottom: 16px;
+      margin-bottom: 10px;
     }
 
     .price-row {
@@ -204,7 +204,7 @@
     }
 
     .price {
-      font-size: 28px;
+      font-size: 23px;
       font-weight: 700;
       letter-spacing: -1px;
       color: var(--text);
@@ -225,8 +225,8 @@
     .meta {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 18px;
+      gap: 8px;
+      margin-bottom: 12px;
     }
 
     .meta-item {
@@ -258,7 +258,7 @@
       background: white;
       color: var(--text);
       border-radius: 8px;
-      padding: 9px 12px;
+      padding: 8px 10px;
       transition: all 0.15s;
     }
 
@@ -287,8 +287,8 @@
       background: var(--white);
       border: 1.5px solid var(--border);
       border-radius: var(--radius);
-      padding: 20px;
-      height: 200px;
+      padding: 14px;
+      height: 170px;
       overflow: hidden;
       position: relative;
     }
@@ -312,9 +312,45 @@
       margin-bottom: 10px;
     }
 
+    .toolbar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .sort-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .sort-select {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: var(--text);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      background: var(--white);
+      padding: 8px 10px;
+      min-width: 170px;
+      outline: none;
+    }
+
+    .sort-select:focus {
+      border-color: #b6ccff;
+      box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+    }
+
     @media (max-width: 640px) {
       .header { padding: 0 16px; }
       .main { padding: 20px 16px; }
+      .toolbar { justify-content: flex-start; }
+      .sort-select { min-width: 100%; }
+      .sort-label { width: 100%; }
     }
   </style>
 </head>
@@ -338,6 +374,17 @@
   <main class="main">
     <h1 class="page-title">Available destinations</h1>
     <p class="page-subtitle">Browse flight prices and send requests for any destination.</p>
+    <div class="toolbar">
+      <label class="sort-label" for="sortSelect">
+        Sort by
+        <select id="sortSelect" class="sort-select">
+          <option value="city-asc">City A-Z</option>
+          <option value="city-desc">City Z-A</option>
+          <option value="price-asc">Price low to high</option>
+          <option value="price-desc">Price high to low</option>
+        </select>
+      </label>
+    </div>
 
     <div class="grid" id="skeletons">
       ${Array(6).fill(0).map(() => `
@@ -358,8 +405,11 @@
     const skeletons = document.getElementById("skeletons");
     const refreshBtn = document.getElementById("refreshBtn");
     const statusText = document.getElementById("statusText");
+    const sortSelect = document.getElementById("sortSelect");
+    let airportsData = [];
 
     refreshBtn.addEventListener("click", load);
+    sortSelect.addEventListener("change", renderSorted);
 
     async function load() {
       refreshBtn.disabled = true;
@@ -376,13 +426,31 @@
         skeletons.style.display = "none";
         grid.style.display = "grid";
         statusText.textContent = `${data.total} destinations`;
-        render(data.airports);
+        airportsData = Array.isArray(data.airports) ? data.airports : [];
+        renderSorted();
       } catch {
         statusText.textContent = "Connection error.";
         skeletons.style.display = "none";
       } finally {
         refreshBtn.disabled = false;
       }
+    }
+
+    function renderSorted() {
+      const sorted = [...airportsData];
+      const mode = sortSelect.value;
+
+      if (mode === "price-asc") {
+        sorted.sort((a, b) => numericPrice(a) - numericPrice(b));
+      } else if (mode === "price-desc") {
+        sorted.sort((a, b) => numericPrice(b) - numericPrice(a));
+      } else if (mode === "city-desc") {
+        sorted.sort((a, b) => String(b.city_name ?? "").localeCompare(String(a.city_name ?? ""), undefined, { sensitivity: "base" }));
+      } else {
+        sorted.sort((a, b) => String(a.city_name ?? "").localeCompare(String(b.city_name ?? ""), undefined, { sensitivity: "base" }));
+      }
+
+      render(sorted);
     }
 
     function render(airports) {
@@ -410,14 +478,14 @@
 
           <div class="price-row">
             ${price != null
-              ? `<span class="price">${price}</span><span class="currency">${esc(cur)}</span>`
+              ? `<span class="price">${esc(formatPrice(price))}</span><span class="currency">${esc(cur)}</span>`
               : `<span class="price no-price">No price yet</span>`}
           </div>
 
           <div class="meta">
             ${updated ? `<span class="meta-item">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              ${esc(updated)}
+              ${esc(formatUpdated(updated))}
             </span>` : ""}
             ${nights != null ? `<span class="meta-item">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -475,6 +543,22 @@
 
     function esc(s) {
       return String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    function numericPrice(airport) {
+      const p = airport?.cheapest?.price;
+      return typeof p === "number" ? p : Number.MAX_SAFE_INTEGER;
+    }
+
+    function formatPrice(value) {
+      return new Intl.NumberFormat(undefined, { maximumFractionDigits: 0 }).format(value);
+    }
+
+    function formatUpdated(value) {
+      const d = new Date(value);
+      return Number.isNaN(d.getTime())
+        ? value
+        : d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
     }
 
     load();
