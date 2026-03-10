@@ -132,6 +132,43 @@
       margin-bottom: 28px;
     }
 
+    .tabs {
+      display: inline-flex;
+      gap: 8px;
+      padding: 6px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      margin-bottom: 24px;
+    }
+
+    .tab-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .tab-btn:hover {
+      background: #f3f4f6;
+      color: var(--text);
+    }
+
+    .tab-btn.active {
+      background: var(--blue);
+      color: var(--white);
+    }
+
+    .tab-panel[hidden] {
+      display: none;
+    }
+
     /* Grid */
     .grid {
       display: grid;
@@ -345,9 +382,39 @@
       box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
     }
 
+    .empty-state {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 48px 24px;
+      text-align: center;
+    }
+
+    .empty-state h2 {
+      font-size: 22px;
+      margin-bottom: 10px;
+      letter-spacing: -0.4px;
+    }
+
+    .empty-state p {
+      max-width: 520px;
+      margin: 0 auto;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
     @media (max-width: 640px) {
       .header { padding: 0 16px; }
       .main { padding: 20px 16px; }
+      .tabs {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-radius: 18px;
+      }
+      .tab-btn {
+        width: 100%;
+      }
       .toolbar { justify-content: flex-start; }
       .sort-select { min-width: 100%; }
       .sort-label { width: 100%; }
@@ -372,32 +439,82 @@
   </header>
 
   <main class="main">
-    <h1 class="page-title">Available destinations</h1>
-    <p class="page-subtitle">Browse flight prices and send requests for any destination.</p>
-    <div class="toolbar">
-      <label class="sort-label" for="sortSelect">
-        Sort by
-        <select id="sortSelect" class="sort-select">
-          <option value="city-asc">City A-Z</option>
-          <option value="city-desc">City Z-A</option>
-          <option value="price-asc">Price low to high</option>
-          <option value="price-desc">Price high to low</option>
-        </select>
-      </label>
+    <div class="tabs" role="tablist" aria-label="Flight categories">
+      <button class="tab-btn active" id="tabLowCost" type="button" role="tab" aria-selected="true" aria-controls="panelLowCost" data-tab="low-cost">Low Cost Flights</button>
+      <button class="tab-btn" id="tabLongHaul" type="button" role="tab" aria-selected="false" aria-controls="panelLongHaul" data-tab="long-haul">Long Haul Flights</button>
     </div>
 
-    <div class="grid" id="skeletons">
-      ${Array(6).fill(0).map(() => `
+    <section class="tab-panel" id="panelLowCost" role="tabpanel" aria-labelledby="tabLowCost">
+      <h1 class="page-title">Available destinations</h1>
+      <p class="page-subtitle">Browse flight prices and send requests for any destination.</p>
+      <div class="toolbar">
+        <label class="sort-label" for="sortSelect">
+          Sort by
+          <select id="sortSelect" class="sort-select">
+            <option value="city-asc">City A-Z</option>
+            <option value="city-desc">City Z-A</option>
+            <option value="price-asc">Price low to high</option>
+            <option value="price-desc">Price high to low</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="grid" id="skeletons">
         <div class="skeleton">
           <div class="skel-line" style="width:55%;height:18px;"></div>
           <div class="skel-line" style="width:35%;height:13px;margin-bottom:18px;"></div>
           <div class="skel-line" style="width:45%;height:30px;margin-bottom:8px;"></div>
           <div class="skel-line" style="width:70%;height:13px;margin-bottom:20px;"></div>
           <div class="skel-line" style="width:100%;height:36px;border-radius:8px;margin-bottom:0;"></div>
-        </div>`).join('')}
-    </div>
+        </div>
+        <div class="skeleton">
+          <div class="skel-line" style="width:55%;height:18px;"></div>
+          <div class="skel-line" style="width:35%;height:13px;margin-bottom:18px;"></div>
+          <div class="skel-line" style="width:45%;height:30px;margin-bottom:8px;"></div>
+          <div class="skel-line" style="width:70%;height:13px;margin-bottom:20px;"></div>
+          <div class="skel-line" style="width:100%;height:36px;border-radius:8px;margin-bottom:0;"></div>
+        </div>
+        <div class="skeleton">
+          <div class="skel-line" style="width:55%;height:18px;"></div>
+          <div class="skel-line" style="width:35%;height:13px;margin-bottom:18px;"></div>
+          <div class="skel-line" style="width:45%;height:30px;margin-bottom:8px;"></div>
+          <div class="skel-line" style="width:70%;height:13px;margin-bottom:20px;"></div>
+          <div class="skel-line" style="width:100%;height:36px;border-radius:8px;margin-bottom:0;"></div>
+        </div>
+        <div class="skeleton">
+          <div class="skel-line" style="width:55%;height:18px;"></div>
+          <div class="skel-line" style="width:35%;height:13px;margin-bottom:18px;"></div>
+          <div class="skel-line" style="width:45%;height:30px;margin-bottom:8px;"></div>
+          <div class="skel-line" style="width:70%;height:13px;margin-bottom:20px;"></div>
+          <div class="skel-line" style="width:100%;height:36px;border-radius:8px;margin-bottom:0;"></div>
+        </div>
+        <div class="skeleton">
+          <div class="skel-line" style="width:55%;height:18px;"></div>
+          <div class="skel-line" style="width:35%;height:13px;margin-bottom:18px;"></div>
+          <div class="skel-line" style="width:45%;height:30px;margin-bottom:8px;"></div>
+          <div class="skel-line" style="width:70%;height:13px;margin-bottom:20px;"></div>
+          <div class="skel-line" style="width:100%;height:36px;border-radius:8px;margin-bottom:0;"></div>
+        </div>
+        <div class="skeleton">
+          <div class="skel-line" style="width:55%;height:18px;"></div>
+          <div class="skel-line" style="width:35%;height:13px;margin-bottom:18px;"></div>
+          <div class="skel-line" style="width:45%;height:30px;margin-bottom:8px;"></div>
+          <div class="skel-line" style="width:70%;height:13px;margin-bottom:20px;"></div>
+          <div class="skel-line" style="width:100%;height:36px;border-radius:8px;margin-bottom:0;"></div>
+        </div>
+      </div>
 
-    <div class="grid" id="grid" style="display:none;"></div>
+      <div class="grid" id="grid" style="display:none;"></div>
+    </section>
+
+    <section class="tab-panel" id="panelLongHaul" role="tabpanel" aria-labelledby="tabLongHaul" hidden>
+      <h1 class="page-title">Long Haul Flights</h1>
+      <p class="page-subtitle">This tab is ready for the long-haul inventory when you want to wire it in.</p>
+      <div class="empty-state">
+        <h2>No long-haul flights yet</h2>
+        <p>This page is intentionally empty for now. The tab is live and ready for data, filters, and actions once you decide what should go here.</p>
+      </div>
+    </section>
   </main>
 
   <script>
@@ -406,10 +523,18 @@
     const refreshBtn = document.getElementById("refreshBtn");
     const statusText = document.getElementById("statusText");
     const sortSelect = document.getElementById("sortSelect");
+    const tabButtons = Array.from(document.querySelectorAll(".tab-btn"));
+    const tabPanels = {
+      "low-cost": document.getElementById("panelLowCost"),
+      "long-haul": document.getElementById("panelLongHaul")
+    };
     let airportsData = [];
 
     refreshBtn.addEventListener("click", load);
     sortSelect.addEventListener("change", renderSorted);
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", () => setActiveTab(button.dataset.tab));
+    });
 
     async function load() {
       refreshBtn.disabled = true;
@@ -559,6 +684,18 @@
       return Number.isNaN(d.getTime())
         ? value
         : d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+    }
+
+    function setActiveTab(tab) {
+      tabButtons.forEach((button) => {
+        const active = button.dataset.tab === tab;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-selected", active ? "true" : "false");
+      });
+
+      Object.entries(tabPanels).forEach(([key, panel]) => {
+        panel.hidden = key !== tab;
+      });
     }
 
     load();
