@@ -1,56 +1,7 @@
 {
-  "total_airports": 100,
+  "total_airports": 101,
   "airports": [
-    {
-      "city_name": "Amman",
-      "slug": "amman-jordan",
-      "country": "jordan",
-      "iata_city_code": "AMM",
-      "number_of_nights": "5-7",
-      "direct": "true",
-      "cheapest": "true",
-      "hotel": "Amman,Iordania-p1427"
-    },
-    {
-      "city_name": "Tirana",
-      "slug": "tirana-albania",
-      "country": "albania",
-      "iata_city_code": "TIA",
-      "number_of_nights": "3",
-      "direct": "true",
-      "cheapest": "true",
-      "hotel": "Durrs,Albania-p44376"
-    },
-    {
-      "city_name": "Yerevan",
-      "slug": "yerevan-armenia",
-      "country": "armenia",
-      "iata_city_code": "EVN",
-      "number_of_nights": "3",
-      "direct": "true",
-      "cheapest": "true",
-      "hotel": "Yerevan,Armenia,Yerevan-p174279-lEVN"
-    },
-    {
-      "city_name": "Vienna",
-      "slug": "vienna-austria",
-      "country": "austria",
-      "iata_city_code": "VIE",
-      "number_of_nights": "3",
-      "direct": "true",
-      "cheapest": "true",
-      "hotel": "Viena,Austria,Vienna-Intl-p174474-lVIE"
-    },
-    {
-      "city_name": "City Of Brussels",
-      "slug": "city-of-brussels-belgium",
-      "country": "belgium",
-      "iata_city_code": "BRU",
-      "number_of_nights": "3",
-      "direct": "true",
-      "cheapest": "true",
-      "hotel": "Bruxelles,Belgia,Bruxelles-National-p176710-lBRU"
-    },
+    
     {
       "city_name": "Zadar",
       "slug": "zadar-croatia",
@@ -60,6 +11,16 @@
       "direct": "true",
       "cheapest": "true",
       "hotel": "Zadar,Croatia-p44398"
+    },
+    {
+      "city_name": "Marrakesh",
+      "slug": "marrakesh-morocco",
+      "country": "maroc",
+      "iata_city_code": "RAK",
+      "number_of_nights": "5-7",
+      "direct": "true",
+      "cheapest": "true",
+      "hotel": "Marrakech,Maroc,Menara-p177101-lRAK"
     },
     {
       "city_name": "Larnaca",
@@ -940,6 +901,57 @@
       "direct": "true",
       "cheapest": "true",
       "hotel": "Manchester,England,Marea-Britanie-p29189"
+    },
+
+    {
+      "city_name": "Amman",
+      "slug": "amman-jordan",
+      "country": "jordan",
+      "iata_city_code": "AMM",
+      "number_of_nights": "5-7",
+      "direct": "true",
+      "cheapest": "true",
+      "hotel": "Amman,Iordania-p1427"
+    },
+    {
+      "city_name": "Tirana",
+      "slug": "tirana-albania",
+      "country": "albania",
+      "iata_city_code": "TIA",
+      "number_of_nights": "3",
+      "direct": "true",
+      "cheapest": "true",
+      "hotel": "Durrs,Albania-p44376"
+    },
+    {
+      "city_name": "Yerevan",
+      "slug": "yerevan-armenia",
+      "country": "armenia",
+      "iata_city_code": "EVN",
+      "number_of_nights": "3",
+      "direct": "true",
+      "cheapest": "true",
+      "hotel": "Yerevan,Armenia,Yerevan-p174279-lEVN"
+    },
+    {
+      "city_name": "Vienna",
+      "slug": "vienna-austria",
+      "country": "austria",
+      "iata_city_code": "VIE",
+      "number_of_nights": "3",
+      "direct": "true",
+      "cheapest": "true",
+      "hotel": "Viena,Austria,Vienna-Intl-p174474-lVIE"
+    },
+    {
+      "city_name": "City Of Brussels",
+      "slug": "city-of-brussels-belgium",
+      "country": "belgium",
+      "iata_city_code": "BRU",
+      "number_of_nights": "3",
+      "direct": "true",
+      "cheapest": "true",
+      "hotel": "Bruxelles,Belgia,Bruxelles-National-p176710-lBRU"
     },
     {
       "city_name": "Abu Dhabi",
