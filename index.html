@@ -480,6 +480,7 @@
         <label class="sort-label" for="sortSelect">
           Sort by
           <select id="sortSelect" class="sort-select">
+            <option value="updated-desc">Latest updates</option>
             <option value="city-asc">City A-Z</option>
             <option value="city-desc">City Z-A</option>
             <option value="price-asc">Price low to high</option>
@@ -678,7 +679,9 @@
       const sorted = [...airportsData];
       const mode = sortSelect.value;
 
-      if (mode === "price-asc") {
+      if (mode === "updated-desc") {
+        sorted.sort((a, b) => numericUpdatedAt(b) - numericUpdatedAt(a));
+      } else if (mode === "price-asc") {
         sorted.sort((a, b) => numericPrice(a) - numericPrice(b));
       } else if (mode === "price-desc") {
         sorted.sort((a, b) => numericPrice(b) - numericPrice(a));
@@ -828,6 +831,12 @@
     function numericPrice(airport) {
       const p = airport?.cheapest?.price;
       return typeof p === "number" ? p : Number.MAX_SAFE_INTEGER;
+    }
+
+    function numericUpdatedAt(airport) {
+      const updatedAt = airport?.cheapest?.updated_at;
+      const timestamp = Date.parse(updatedAt);
+      return Number.isFinite(timestamp) ? timestamp : Number.NEGATIVE_INFINITY;
     }
 
     function formatPrice(value) {
